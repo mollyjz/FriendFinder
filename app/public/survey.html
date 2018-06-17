@@ -158,11 +158,37 @@
 
 <br>
 
-<p><input type="submit" id="submit"></p>
+<p>
+<button type="button" id="submit" class="btn btn-primary" data-toggle="modal" data-target="#bestMatchModal">
+    Submit
+  </button>
+</p>
 
 </form>
 
 <p><a href="api/friends">API Friends List</a> | <a href="">GitHub Repo</a></p>
+
+<!-- Modal -->
+<div class="modal" id="bestMatchModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">You are most compatible with...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="bestMatchName"></p>
+          <p><img id="bestMatchPhoto"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
 
 
 
@@ -191,14 +217,15 @@ $("#submit").on("click", function(event) {
         ]
     };
 
+
     var currentUrl = window.location.origin;
 
-/////////////////// ERROR HERE /////////////////////////////////////////////////////////////////
     $.post(currentUrl + "/api/friends", newFriend, function(data) {
     //post newFriend object to api/friends page
     //...then create a "card" for that new friend with name and photo for a potential modal
-        $("#matchName").text(data.name);
-        $("#matchPhoto").attr("src", data.photoUrl);
+        $("#bestMatchName").text(data.name);
+        $("#bestMatchPhoto").attr("src", data.photoUrl);
+        //$("#bestMatchModal").modal("toggle");
     });
 
     function clear() { //clear form
@@ -218,9 +245,6 @@ $("#submit").on("click", function(event) {
     clear();
 
 });
-
-
-//NEED MODAL WITH NAME & PHOTO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 </script>
