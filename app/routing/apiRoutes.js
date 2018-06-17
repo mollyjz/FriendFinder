@@ -20,8 +20,7 @@ module.exports = function(app) {
     for (var i=0; i<friends.length - 1; i++) { //compare array of scores to those of each other friend saved
       var scoreArray = friends[i].scores; //other friends' score arrays      
       var totalDifference = 0; //initial value
-      console.log("scoreArray: " + scoreArray);
-
+      
       for (var j=0; j<scoreArray.length; j++) { //loop through each question to calculate difference in score
         totalDifference += Math.abs(parseInt(newUserScores[j]) - parseInt(scoreArray[j])); //calculating total score differential for that friend
 
