@@ -34,15 +34,20 @@ module.exports = function(app) {
         console.log("absDiff is " + absDiff);
         diffArray.push(absDiff); //push each difference in score to array
         console.log("diffArray: " + diffArray); //ok
-        totalDifference = function() {
-          for (var x=0; x<scoreArray.length; x++) {
-            var sum;
-            sum += sum[x];
-            return sum;  
+        
+        function sum(arr) {
+          totalDiff = 0;
+          for (var x=0; x<arr.length; x++) {
+            totalDiff += arr[x];
           }
-        } //????????????????????????????????????????????????????///////////////////////////
-        console.log("total diff: " + totalDifference); ////////ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //totalDifference.data("friendName", friends[i].name); //match total diff with friend name
+          return totalDiff;
+        }
+        var totalDifference = sum(diffArray);
+        //console.log(totalDifference); //ok
+
+        totalDifference.data("friendName", friends[i].name); //match total diff with friend name
+        console.log(totalDifference.friendName);
+
         totalDifferenceArray.push(totalDifference);
         totalDifferenceArray.sort();
         //var match = totalDifferenceArray[0].friendName; //does it still have the friendName attribute???????????????????????????????????
