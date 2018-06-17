@@ -1,7 +1,6 @@
 <html>
 
 <head>
-  <script src="../../server.js"></script>
   <script src="https://code.jquery.com/jquery.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 </head>
@@ -172,9 +171,6 @@
 
 <script type="text/javascript">
 
-var friends = [];
-var responseScore; //????????????????????????????????????
-
 $("#submit").on("click", function(event) {
     event.preventDefault();
 
@@ -195,38 +191,14 @@ $("#submit").on("click", function(event) {
         ]
     };
 
-    friends.push(newFriend); //add new friend object to array
-    console.log(friends);
+    var currentUrl = window.location.origin;
 
-
-    function calculateMatch() { //compare array of scores to those of other friends
-        var scoreArray = newFriend.scores;
-        for (var i=0; i<friends.length; i++) { //compare scores to those of each of the other friends
-            for (var j=0; j<scoreArray.length; j++) {
-                var diff = scoreArray[j] - friends[i].scores[j]; //calculate difference between each score for each friend
-                var absDiff = Math.abs(diff); //get absolute value
-                var diffArray = []; //array of differences
-                diffArray.push(absDiff);
-                var totalDifference = diffArray.reduce(function(total, amount) {
-                    return total + amount; //calculate sum of score differences
-                    console.log(totalDifference);
-                });
-                totalDifference.data("friendName", friends[i].name); //match total diff with friend name
-                var totalDifferenceArray = [];
-                totalDifferenceArray.push(totalDifference);
-                totalDifferenceArray.sort();
-                var match = totalDifferenceArray[0].friendName; //does it still have the friendName attribute???????????????????????????????????
-                console.log("Your best match is " + match + "!");
-            }
-        }
-    }
-    calculateMatch();
-    //console.log(newFriend);
-
-
-    $.post("/api/friends", newFriend, function(data) { //routing js file determines whether table is available or now; if so, it returns data; if not, it doesn't
-        //$("#matchName").text(data.name); ///////////////////////////
-        //$("#matchPic").attr("src", data.profilePic); ////////////////////////
+/////////////////// ERROR HERE /////////////////////////////////////////////////////////////////
+    $.post(currentUrl + "/api/friends", newFriend, function(data) {
+    //post newFriend object to api/friends page
+    //...then create a "card" for that new friend with name and photo for a potential modal
+        $("#matchName").text(data.name);
+        $("#matchPhoto").attr("src", data.photoUrl);
     });
 
     function clear() { //clear form
@@ -252,8 +224,6 @@ $("#submit").on("click", function(event) {
 
 
 </script>
-
-
 
 </body>
 </html>
