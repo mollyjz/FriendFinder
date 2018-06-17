@@ -10,54 +10,43 @@ module.exports = function(app) {
 
 	app.post("/api/friends", function(req, res) { //once post request is received by server...
     //console.log("hi"); //ok
-    friends.push(req.body);  //push new form data
+    
+    var bestMatch = {
+      name: "",
+      photo: "",
+      diff: 100,  
+    }
  
-//		var newUserName = req.body.name; //this is for the new user being submitted
-//		var newUserPhoto = req.body.image;
     var newUserScores = req.body.scores;
     console.log("new user's scores: " + newUserScores)
 
     for (var i=0; i<friends.length - 1; i++) { //compare array of scores to those of each other friend saved
       var scoreArray = friends[i].scores; //other friends' score arrays
-      console.log("scoreArray: " + scoreArray); //only logs for first friend in list?????????????????????????!!!!!!!!!! SO NOT PERMANENTLY PUSHING NEW FRIENDS TO PAGE/DB!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+      
       var totalDifference = 0;
-      var totalDifferenceArray = [];
 
+      console.log("scoreArray: " + scoreArray);
+
+      //var totalDifferenceArray = [];
       var diffArray = [];
 
       for (var j=0; j<scoreArray.length; j++) { //loop through each question to calculate difference in score
-          
-        var diff = parseInt(newUserScores[j]) - parseInt(scoreArray[j]);
-        console.log("DIFF IS: " + diff)
-        var absDiff = Math.abs(diff); //get absolute values
-        console.log("absDiff is " + absDiff);
-        diffArray.push(absDiff); //push each difference in score to array
-        console.log("diffArray: " + diffArray); //ok
-        
-        function sum(arr) {
-          totalDiff = 0;
-          for (var x=0; x<arr.length; x++) {
-            totalDiff += arr[x];
-          }
-          return totalDiff;
+
+        totalDifference += Math.abs(parseInt(newUserScores[j]) - parseInt(scoreArray[j])); //adding difference between each question's score to calculate total score differential
+
+        if (totalDifference <= bestMatch.diff) { //if diff is lower than that of current best match...
+          bestMatch.name = friends[i].name; //that friend is best match, so assign name,
+          bestMatch.photo = friends[i].photo; //photo,
+          bestMatch.diff = totalDifference; //and score differential
         }
-        var totalDifference = sum(diffArray);
-        //console.log(totalDifference); //ok
 
-        totalDifference.data("friendName", friends[i].name); //match total diff with friend name
-        console.log(totalDifference.friendName);
-
-        totalDifferenceArray.push(totalDifference);
-        totalDifferenceArray.sort();
-        //var match = totalDifferenceArray[0].friendName; //does it still have the friendName attribute???????????????????????????????????
-        //console.log("Your best match is " + match + "!"); //this shouldn't be inside for-loop!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+      }
+      
     }
-  
-    }
+    friends.push(req.body);  //push new form data
+    //console.log(bestMatch);
 
-
-
+    res.json(bestMatch); //post best match as JSON object
   });
 
 }
